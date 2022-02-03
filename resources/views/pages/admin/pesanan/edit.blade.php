@@ -1,0 +1,60 @@
+@extends('layout.admin')
+
+@section('title')
+    Dashboard | Menu | Update
+@endsection
+
+@section('page-heading')
+    Menu
+@endsection
+
+@section('content')
+    <div class="card shadow">
+        <div class="card-header">
+            Edit Pesanan
+        </div>
+        <div class="container my-4">
+            <div class="row">
+                <div class="col-md-4">
+                    @if ($errors->any())
+                        <div class="container alert alert-danger alert-dismissible fade show mt-2" role="alert">
+                            <ul>
+                                @foreach ($errors->all() as $error)
+                                    <li><strong>{{ $error }}</strong></li>
+                                @endforeach
+                            </ul>
+                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                        </div>
+                    @endif
+                    <form method="POST" action="{{ route('pesanan.store', $item->id) }}" enctype="multipart/form-data">
+                        @csrf
+                        <div class="form-group">
+                            <label for="nama">Nama Menu :</label>
+                            <select name="menu_id" class="custom-select" id="">
+                                <option value="{{ $item->id }}" disabled>{{ $namaMenu->nama_menu }}</option>
+                                @foreach ($menu as $m)
+                                    <option value="{{ $m->id }}">{{ $m->nama_menu }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="nama">Pembeli :</label>
+                            <input type="text" name="nama" class="form-control" required value="{{ $item->nama }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="nama">Meja :</label>
+                            <input type="text" name="meja" class="form-control" required value="{{ $item->meja }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="nama">Jumlah :</label>
+                            <input type="number" name="jumlah" class="form-control" required value="{{ $item->jumlah }}">
+                        </div>
+                        <button type="submit" class="btn btn-success mt-4">
+                            Tambah Menu
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+@endsection
