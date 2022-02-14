@@ -9,6 +9,9 @@
 @endsection
 
 @section('content')
+    @push('addon-css')
+        <link rel="stylesheet" href="{{ asset('plugins/toast/build/toastr.css') }}">
+    @endpush
 
     <div class="row">
         <div class="col-12">
@@ -22,12 +25,10 @@
                             <thead>
                                 <tr>
                                 <th scope="col">#</th>
-                                <th scope="col">Nama Menu</th>
                                 <th scope="col">Pembeli</th>
                                 <th scope="col">Meja</th>
-                                <th scope="col">Jumlah</th>
                                 <th scope="col">Status</th>
-                                <th scope="col">Konfirmasi</th>
+                                <th scope="col">Aksi</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -42,21 +43,22 @@
                                 @foreach ($pesanan as $key => $data)
                                 <tr>
                                     <th scope="row">{{ $key + 1 }}</th>
-                                    <td>{{ $data->menu->nama_menu }}</td>
                                     <td>{{ $data->nama }}</td>
                                     <td>{{ $data->meja }}</td>
-                                    <td>{{ $data->jumlah }}</td>
-                                    <td class="@if ($data->status == 'DIBUAT')
+                                        <td class="@if ($data->status == 'DIBUAT')
                                         text-warning
                                         @endif">{{ $data->status }}</td>
                                     <td>
-                                        <form class="d-inline" action="{{ route('pesanan-waiter', $data->id) }}" method="post">
+                                        {{-- <form class="d-inline" action="{{ route('pesanan-waiter', $data->id) }}" method="post">
                                             @csrf
                                             @method('PATCH')
-                                            <button type="submit" class="btn btn-success">
-                                                <i class="fas fa-check"></i>
+                                            <button type="submit" class="btn btn-primary">
+                                                <i class="fas fa-user"></i>
                                             </button>
-                                        </form>
+                                        </form> --}}
+                                        <a href="{{ route('pesanan-detail', [$data->nama, $data->meja]) }}" type="submit" class="btn btn-primary">
+                                            <i class="fas fa-user"></i>
+                                        </a>
                                     </td>
                                 </tr>
                                 @endforeach
@@ -68,4 +70,29 @@
             </div>
         </div>
     </div>
+    @push('addon-js')
+    <script src="{{ asset('plugins/toast/nuget/content/scripts/toastr.js') }}"></script>
+    @if (session()->has('success'))
+    <script>
+        toastr["success"]("Pesanan baru telah masuk!");
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+    </script>
+    @endif
+    @endpush
 @endsection

@@ -51,10 +51,16 @@ Route::middleware(['auth','isAdmin'])->group(function() {
 // Waiter Panel
 Route::middleware(['auth', 'isWaiter'])->group(function() {
     Route::get('/waiter-panel', [DashboardWaiterController::class, 'index'])->name('dashboardWaiter');
-    Route::patch('/waiter-panel/pesanan-up/{id}', [DashboardWaiterController::class, 'pesanan'])->name('pesanan-waiter');
+    Route::get('/waiter-panel/pesanan/{nama}-{meja}', [DashboardWaiterController::class, 'detail'])->name('pesanan-detail');
+    Route::patch('/waiter-panel/pesanan-up/{nama}', [DashboardWaiterController::class, 'pesananConfirm'])->name('pesanan-confirm');
 
     // Order
     Route::get('/waiter-panel/order', [DashboardWaiterController::class, 'order'])->name('waiter-order');
     Route::post('/waiter-panel/order', [DashboardWaiterController::class, 'orderAction'])->name('waiter-order-action');
+    Route::get('/waiter-panel/order/menu/{nama}', [DashboardWaiterController::class, 'menu'])->name('waiter-order-menu');
+    Route::post('/waiter-panel/order/menu/{nama}', [DashboardWaiterController::class, 'menuAction'])->name('waiter-order-menu-action');
+    Route::post('/waiter-panel/order/menu/{nama}/cart', [DashboardWaiterController::class, 'cartInsert'])->name('cart.insert');
+    Route::post('/waiter-panel/order/menu/cart/{id}', [DashboardWaiterController::class, 'cartDelete'])->name('cart.delete');
+    Route::get('/waiter-panel/order/menu/cart/batal', [DashboardWaiterController::class, 'cartBatal'])->name('cart.batal');
 });
 
