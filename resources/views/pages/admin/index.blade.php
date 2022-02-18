@@ -23,7 +23,7 @@
                     </div>
                 </div>
                 <div class="card-body">
-                    <form action="" method="POST">
+                    <form action="{{ route('laporan') }}" method="POST">
                         @csrf
                         <div class="row">
                             <div class="col-lg-3 mb-3">
@@ -49,19 +49,28 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($data as $key => $d)
+                                @if (count($data) == 0)
                                     <tr>
-                                        <td class="text">{{ $key + 1 }}</td>
-                                        <td class="text">{{ $d->menu->nama_menu }}</td>
-                                        <td class="text">{{ $d->jumlah }}</td>
-                                        <td class="text">Rp.{{ number_format($d->menu->harga) }}</td>
-                                        <td class="text">Rp.{{ number_format($d->jumlah * $d->menu->harga) }}</td>
+                                        <td colspan="7" class="text-center">
+                                            <strong>Data tidak ditemukan</strong>
+                                            <hr>
+                                        </td>
                                     </tr>
-                                @endforeach
-                                    <tr>
-                                        <th class="text-center bg-light" colspan="4">Total Pemasukkan</th>
-                                        <th class="text-primary">Rp.{{ number_format($total) }}</th>
-                                    </tr>
+                                    @else
+                                        @foreach ($data as $key => $d)
+                                            <tr>
+                                                <td class="text">{{ $key + 1 }}</td>
+                                                <td class="text">{{ $d->menu->nama_menu }}</td>
+                                                <td class="text">{{ $d->jumlah }}</td>
+                                                <td class="text">Rp.{{ number_format($d->menu->harga) }}</td>
+                                                <td class="text">Rp.{{ number_format($d->jumlah * $d->menu->harga) }}</td>
+                                            </tr>
+                                        @endforeach
+                                        <tr>
+                                            <th class="text-center bg-light" colspan="4">Total Pemasukkan</th>
+                                            <th class="text-primary">Rp.{{ number_format($total) }}</th>
+                                        </tr>
+                                @endif
                             </tbody>
                         </table>
                         {{-- {{ $data->links() }} --}}

@@ -6,6 +6,8 @@ use App\Models\Menu;
 use App\Models\Pesanan;
 use App\Models\Transaksi;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Http\Request;
 
 class DashboardController extends Controller
 {
@@ -18,7 +20,20 @@ class DashboardController extends Controller
         $transaksi = Transaksi::count();
         $pesanan = Pesanan::count();
 
-        $data = Pesanan::with('menu')->where('status', 'DIANTAR')->get(['menu_id','jumlah']);
+        // if($date == null) {
+        //     $object = Carbon::now();
+        //     $date = $object->toDateString();
+        //     $data = Pesanan::with('menu')->where('status', 'DIANTAR')->whereRaw('DATE(created_at) = ?', [$date])->get(['menu_id','jumlah']);
+        // }
+        // dd(request()->d);
+        if(request()->has('d')) {
+            $data = Pesanan::with('menu')->where('status', 'DIANTAR')->whereRaw('DATE(created_at) = ?', [request()->d])->get(['menu_id','jumlah']);
+        } else {
+            $object = Carbon::now();
+            $date = $object->toDateString();
+            $data = Pesanan::with('menu')->where('status', 'DIANTAR')->whereRaw('DATE(created_at) = ?', [$date])->get(['menu_id','jumlah']);
+        }
+
         // $data = Menu::findMany($id);
         $total = 0;
         if($data) {
@@ -26,9 +41,19 @@ class DashboardController extends Controller
                 $total += $d->menu->harga * $d->jumlah;
             }
         }
-        // dd($total);
 
         return view('pages.admin.index',compact('menu', 'user', 'transaksi', 'pesanan', 'data', 'total'));
+    }
+
+    public function laporan(Request $request)
+    {
+        $item = $request->all();
+
+        $waktu = $item['waktu'];
+
+        // dd($waktu);
+
+        return redirect()->route('dashboard', ['d' => $waktu]);
     }
 
 }

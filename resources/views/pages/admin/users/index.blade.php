@@ -43,7 +43,7 @@
                                 <td>{{ $da->email }}</td>
                                 <td>{{ $da->level }}</td>
                                 <td>
-                                    <a href="{{ route('pesanan.edit', $da->id) }}" class="btn btn-warning">
+                                    <a href="{{ route('user.edit', $da->id) }}" class="btn btn-warning">
                                         <i class="fas fa-edit"></i>
                                     </a>
                                     <form class="d-inline" action="{{ route('user.destroy', $da->id) }}" method="post">
