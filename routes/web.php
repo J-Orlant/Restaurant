@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\CashierController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LoginController;
@@ -10,6 +11,7 @@ use App\Http\Controllers\RegisterController;
 use App\Http\Controllers\TransaksiController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\DashboardWaiterController;
+use App\Http\Controllers\MejaController;
 use App\Http\Controllers\UserController;
 use App\Models\Transaksi;
 
@@ -42,7 +44,7 @@ Route::post('/register', [RegisterController::class, 'store'])->name('registerPo
 Route::middleware(['auth','isAdmin'])->group(function() {
     Route::get('/admin-panel', [DashboardController::class, 'index'])->name('dashboard');
     Route::resource('/admin-panel/menu', MenuController::class);
-    Route::resource('/admin-panel/pesanan', PesananController::class);
+    Route::resource('/admin-panel/meja', MejaController::class);
     Route::resource('/admin-panel/transaksi', TransaksiController::class);
     // Route::get('/admin-panel/transaksi/detail', [TransaksiController::class, 'detail'])->name('transaksi.detail');
     Route::resource('/admin-panel/user', UserController::class);
@@ -62,5 +64,12 @@ Route::middleware(['auth', 'isWaiter'])->group(function() {
     Route::post('/waiter-panel/order/menu/{nama}/cart', [DashboardWaiterController::class, 'cartInsert'])->name('cart.insert');
     Route::post('/waiter-panel/order/menu/cart/{id}', [DashboardWaiterController::class, 'cartDelete'])->name('cart.delete');
     Route::get('/waiter-panel/order/menu/cart/batal', [DashboardWaiterController::class, 'cartBatal'])->name('cart.batal');
+});
+
+
+Route::middleware(['auth', 'isCashier'])->group(function() {
+    Route::get('/cashier-panel', [CashierController::class, 'index'])->name('dashboardCashier');
+    Route::get('/cashier-panel/detail/{nama}', [CashierController::class, 'detail'])->name('cashier.detail');
+    Route::patch('/cashier-panel/detail/{nama}', [CashierController::class, 'transaksi'])->name('cashier.transaksi');
 });
 

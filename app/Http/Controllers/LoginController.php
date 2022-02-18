@@ -26,6 +26,8 @@ class LoginController extends Controller
                 return redirect()->intended('/admin-panel');
             } else if(Auth::user()->level == 'WAITER') {
                 return redirect()->intended('/waiter-panel');
+            } else if (Auth::user()->level == 'CASHIER') {
+                return redirect()->intended('/cashier-panel');
             }
         }
 

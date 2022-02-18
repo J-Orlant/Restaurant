@@ -1,14 +1,17 @@
 @extends('layout.admin')
 
 @section('title')
-    Dashboard | Pesanan
+    Dashboard | User
 @endsection
 
 @section('page-heading')
-    Table Pesanan
+    Table User
 @endsection
 
 @section('content')
+    @push('addon-css')
+        <link rel="stylesheet" href="{{ asset('plugins/toast/build/toastr.css') }}">
+    @endpush
 
     <div class="row">
         <div class="col-12">
@@ -17,8 +20,8 @@
                     Menu
                 </div>
                 <div class="col-md-8">
-                    <a href="{{ route('pesanan.create') }}" class="btn btn-primary mt-3">
-                        Tambah Pesanan
+                    <a href="{{ route('user.create') }}" class="btn btn-primary mt-3">
+                        Tambah User
                     </a>
                 </div>
                 <div class="col-md-12 mt-3 table-responsive">
@@ -43,7 +46,7 @@
                                     <a href="{{ route('pesanan.edit', $da->id) }}" class="btn btn-warning">
                                         <i class="fas fa-edit"></i>
                                     </a>
-                                    <form class="d-inline" action="{{ route('pesanan.destroy', $da->id) }}" method="post">
+                                    <form class="d-inline" action="{{ route('user.destroy', $da->id) }}" method="post">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">
@@ -60,5 +63,29 @@
             </div>
         </div>
     </div>
-
+    @push('addon-js')
+    <script src="{{ asset('plugins/toast/nuget/content/scripts/toastr.js') }}"></script>
+    @if (session()->has('success'))
+    <script>
+        toastr["success"]("{{ session('success') }}");
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+    </script>
+    @endif
+    @endpush
 @endsection

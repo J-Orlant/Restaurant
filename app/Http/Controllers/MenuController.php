@@ -48,7 +48,7 @@ class MenuController extends Controller
 
         Menu::create($data);
 
-        return redirect()->route('menu.index');
+        return redirect()->route('menu.index')->with('success', 'Menu berhasil ditambah!');
     }
 
     /**
@@ -72,9 +72,7 @@ class MenuController extends Controller
     {
         $data = Menu::findOrFail($id);
 
-        return view('pages.admin.menu.edit', [
-            'data' => $data,
-        ]);
+        return view('pages.admin.menu.edit',compact('data'));
     }
 
     /**
@@ -100,7 +98,7 @@ class MenuController extends Controller
 
         $item->update($data);
 
-        return redirect()->route('menu.index');
+        return redirect()->route('menu.index')->with('success', 'Menu berhasil diupdate!');
     }
 
     /**
@@ -119,6 +117,6 @@ class MenuController extends Controller
 
         $item->delete();
 
-        return redirect()->route('menu.index');
+        return redirect()->route('menu.index')->with('success', 'Menu berhasil dihapus');
     }
 }

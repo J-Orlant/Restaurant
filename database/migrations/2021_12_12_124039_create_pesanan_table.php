@@ -16,9 +16,9 @@ class CreatePesananTable extends Migration
         Schema::create('pesanan', function (Blueprint $table) {
             $table->id();
             $table->foreignId('menu_id');
-            $table->string('nama');
-            $table->integer('meja');
+            $table->foreignId('transaksi_id');
             $table->integer('jumlah');
+            $table->integer('total');
             $table->string('status')->default('DIBUAT');
             $table->timestamps();
         });

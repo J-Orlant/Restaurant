@@ -11,7 +11,7 @@
 @section('content')
     <div class="card shadow">
         <div class="card-header">
-            Tambah Pesanan
+            Tambah User
         </div>
         <div class="container my-4">
             <div class="row">
@@ -26,30 +26,30 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
-                    <form method="POST" action="{{ route('pesanan.store') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('user.store') }}" enctype="multipart/form-data">
                         @csrf
                         <div class="form-group">
-                            <label for="nama">Nama Menu :</label>
-                            <select name="menu_id" class="custom-select" id="">
-                                @foreach ($menu as $m)
-                                    <option value="{{ $m->id }}">{{ $m->nama_menu }}</option>
-                                @endforeach
+                            <label for="nama">Nama :</label>
+                            <input type="text" name="name" class="form-control" required autofocus>
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email :</label>
+                            <input type="email" name="email" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password :</label>
+                            <input type="password" name="password" class="form-control" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="level">Level :</label>
+                            <select name="level" id="" class="form-control">
+                                <option value="ADMIN">ADMIN</option>
+                                <option value="WAITER" selected>WAITER</option>
+                                <option value="CASHIER">CASHIER</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="nama">Pembeli :</label>
-                            <input type="text" name="nama" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="nama">Meja :</label>
-                            <input type="text" name="meja" class="form-control" required>
-                        </div>
-                        <div class="form-group">
-                            <label for="nama">Jumlah :</label>
-                            <input type="number" name="jumlah" class="form-control" required>
-                        </div>
                         <button type="submit" class="btn btn-success mt-4">
-                            Tambah Menu
+                            Tambah User
                         </button>
                     </form>
                 </div>

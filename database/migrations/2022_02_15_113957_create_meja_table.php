@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateKeranjangTable extends Migration
+class CreateMejaTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,9 @@ class CreateKeranjangTable extends Migration
      */
     public function up()
     {
-        Schema::create('keranjang', function (Blueprint $table) {
+        Schema::create('meja', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('menu_id');
+            $table->integer('status')->default(0);
             $table->timestamps();
         });
     }
@@ -27,6 +27,6 @@ class CreateKeranjangTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('keranjang');
+        Schema::dropIfExists('meja');
     }
 }

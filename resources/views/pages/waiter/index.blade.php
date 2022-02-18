@@ -43,21 +43,14 @@
                                 @foreach ($pesanan as $key => $data)
                                 <tr>
                                     <th scope="row">{{ $key + 1 }}</th>
-                                    <td>{{ $data->nama }}</td>
-                                    <td>{{ $data->meja }}</td>
+                                    <td>{{ $data->transaksi->nama }}</td>
+                                    <td>{{ $data->transaksi->meja }}</td>
                                         <td class="@if ($data->status == 'DIBUAT')
                                         text-warning
                                         @endif">{{ $data->status }}</td>
                                     <td>
-                                        {{-- <form class="d-inline" action="{{ route('pesanan-waiter', $data->id) }}" method="post">
-                                            @csrf
-                                            @method('PATCH')
-                                            <button type="submit" class="btn btn-primary">
-                                                <i class="fas fa-user"></i>
-                                            </button>
-                                        </form> --}}
-                                        <a href="{{ route('pesanan-detail', [$data->nama, $data->meja]) }}" type="submit" class="btn btn-primary">
-                                            <i class="fas fa-user"></i>
+                                        <a href="{{ route('pesanan-detail', [$data->transaksi->nama, $data->transaksi->meja]) }}" type="submit" class="btn btn-primary">
+                                            <i class="fas fa-info"></i>
                                         </a>
                                     </td>
                                 </tr>

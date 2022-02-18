@@ -15,7 +15,8 @@ class CreateTransaksiTable extends Migration
     {
         Schema::create('transaksi', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('pesanan_id');
+            $table->string('nama');
+            $table->foreignId('meja');
             $table->integer('total');
             $table->integer('bayar')->nullable();
             $table->string('status')->default('TERTUNDA');

@@ -2,12 +2,9 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\UserRequest;
-use App\Models\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Hash;
 
-class UserController extends Controller
+class MejaController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -16,9 +13,7 @@ class UserController extends Controller
      */
     public function index()
     {
-        $data = User::whereNotIn('level', ['ADMIN'])->get();
-
-        return view('pages.admin.users.index', compact('data'));
+        return view('pages.admin.meja.index');
     }
 
     /**
@@ -28,7 +23,7 @@ class UserController extends Controller
      */
     public function create()
     {
-        return view('pages.admin.users.insert');
+        //
     }
 
     /**
@@ -37,14 +32,9 @@ class UserController extends Controller
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(UserRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->all();
-        $data['password'] = Hash::make($data['password']);
-
-        User::create($data);
-
-        return redirect()->route('user.index')->with('success', 'User berhasil ditambah');
+        //
     }
 
     /**
@@ -76,7 +66,7 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UserRequest $request, $id)
+    public function update(Request $request, $id)
     {
         //
     }
@@ -89,10 +79,6 @@ class UserController extends Controller
      */
     public function destroy($id)
     {
-        $item = User::findOrFail($id);
-
-        $item->delete();
-
-        return redirect()->route('user.index')->with('success', 'User berhasil di hapus');
+        //
     }
 }

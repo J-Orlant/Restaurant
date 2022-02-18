@@ -9,6 +9,9 @@
 @endsection
 
 @section('content')
+    @push('addon-css')
+        <link rel="stylesheet" href="{{ asset('plugins/toast/build/toastr.css') }}">
+    @endpush
 
     <div class="row">
         <div class="col-12">
@@ -37,7 +40,7 @@
                             <tr>
                                 <th scope="row">{{ $key+1 }}</th>
                                 <td>{{ $d->nama_menu }}</td>
-                                <td>{{ $d->harga }}</td>
+                                <td>Rp.{{ number_format($d->harga) }}</td>
                                 <td>
                                     <img src="{{ Storage::url($d->gambar); }}" width="100px" alt="">
                                 </td>
@@ -62,5 +65,29 @@
             </div>
         </div>
     </div>
-
+    @push('addon-js')
+    <script src="{{ asset('plugins/toast/nuget/content/scripts/toastr.js') }}"></script>
+    @if (session()->has('success'))
+    <script>
+        toastr["success"]("{{ session('success') }}");
+        toastr.options = {
+            "closeButton": true,
+            "debug": false,
+            "newestOnTop": false,
+            "progressBar": false,
+            "positionClass": "toast-bottom-right",
+            "preventDuplicates": false,
+            "onclick": null,
+            "showDuration": "300",
+            "hideDuration": "1000",
+            "timeOut": "5000",
+            "extendedTimeOut": "1000",
+            "showEasing": "swing",
+            "hideEasing": "linear",
+            "showMethod": "fadeIn",
+            "hideMethod": "fadeOut"
+        }
+    </script>
+    @endif
+    @endpush
 @endsection

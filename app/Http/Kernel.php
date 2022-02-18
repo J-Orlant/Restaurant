@@ -3,6 +3,7 @@
 namespace App\Http;
 
 use App\Http\Middleware\isAdmin;
+use App\Http\Middleware\isCashier;
 use App\Http\Middleware\isWaiter;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
@@ -67,5 +68,6 @@ class Kernel extends HttpKernel
         'verified' => \Illuminate\Auth\Middleware\EnsureEmailIsVerified::class,
         'isAdmin' => \App\Http\Middleware\isAdmin::class,
         'isWaiter' => \App\Http\Middleware\isWaiter::class,
+        'isCashier' => \App\Http\Middleware\isCashier::class,
     ];
 }

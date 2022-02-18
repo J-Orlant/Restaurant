@@ -12,12 +12,18 @@ class Transaksi extends Model
     protected $table = 'transaksi';
 
     protected $fillable = [
-        'pesanan_id',
+        'nama',
+        'meja',
         'total',
         'bayar',
+        'status',
     ];
 
     public function pesanan() {
-        return $this->belongsTo(Pesanan::class);
+        return $this->hasMany(Pesanan::class);
+    }
+
+    public function meja() {
+        return $this->belongsTo(Meja::class);
     }
 }

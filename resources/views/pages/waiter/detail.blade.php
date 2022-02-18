@@ -22,6 +22,7 @@
 
             .nama-menu {
                 font-size: 20px;
+                text-overflow: ellipsis;
             }
 
             .jumlah {
@@ -39,8 +40,8 @@
                 </div>
                 <div class="card-body">
                     <div class="d-flex justify-content-between align-items-center">
-                        <h5>{{ $nama }} | Meja {{ $meja }}</h5>
-                        <form action="{{ route('pesanan-confirm', $nama) }}" method="POST">
+                        <h5>{{ $item->nama }} | Meja {{ $item->meja }}</h5>
+                        <form action="{{ route('pesanan-confirm', $item->nama) }}" method="POST">
                             @csrf
                             @method('PATCH')
                             <button class="btn btn-success">Konfirmasi</button>

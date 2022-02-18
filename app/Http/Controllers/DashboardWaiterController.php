@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Meja;
 use App\Models\Menu;
 use App\Models\Pesanan;
 use App\Models\Transaksi;
@@ -16,25 +17,29 @@ class DashboardWaiterController extends Controller
 
     public function index()
     {
-        $pesanan = Pesanan::where('status', 'DIBUAT')->groupBy('nama')->having('menu_id', '>', 1)->orderBy('id', 'DESC')->paginate(5);
+        $pesanan = Pesanan::with('transaksi')->groupBy('transaksi_id')->where('status', 'DIBUAT')->orderBy('id', 'DESC')->paginate(5);
+        // dd($pesanan);
         // $pesanan = Pesanan::groupBy('nama')->having('menu_id', '>', 1)->get();
 
         return view('pages.waiter.index',compact('pesanan'));
     }
 
     public function detail($nama, $meja) {
-        $pesanan = Pesanan::where('nama', $nama)->get();
+        $item = Transaksi::where('nama', $nama)->first();
+        $pesanan = Pesanan::with('transaksi')->where('transaksi_id', $item->id)->get();
 
-        return view('pages.waiter.detail', compact('pesanan', 'nama', 'meja'));
+        return view('pages.waiter.detail', compact('pesanan', 'item'));
     }
 
     public function pesananConfirm($nama) {
-        $item = Pesanan::where('nama', $nama)->get();
+        $item = Transaksi::where('nama', $nama)->first();
 
-        if($item) {
-            foreach($item as $i) {
-                $i->status = 'DIANTAR';
-                $i->save();
+        $pesanan = Pesanan::where('transaksi_id', $item->id)->get();
+
+        if($pesanan) {
+            foreach($pesanan as $p) {
+                $p->status = 'DIANTAR';
+                $p->save();
             }
         }
 
@@ -42,7 +47,10 @@ class DashboardWaiterController extends Controller
     }
 
     public function order() {
-        return view('pages.waiter.order');
+
+        $meja = Meja::all();
+
+        return view('pages.waiter.order', compact('meja'));
     }
 
     public function orderAction(Request $request) {
@@ -90,21 +98,34 @@ class DashboardWaiterController extends Controller
         $nama = session('nama');
         $meja = session('meja');
         $carts = session('cart');
+        $total = 0;
+
+        // dd($carts);
+
+        $transaksi = Transaksi::create([
+            'nama' => $nama,
+            'meja' => $meja,
+            'total' => 0,
+            'bayar' => 0,
+        ]);
 
         foreach($carts as $id => $cart) {
-            $pesanan = Pesanan::create([
+            Pesanan::create([
                 'menu_id' => $id,
-                'nama' => $nama,
-                'meja' => $meja,
+                'transaksi_id' => $transaksi->id,
                 'jumlah' => $cart['jumlah'],
+                'total' => $cart['jumlah'] * $cart['harga'],
             ]);
-
-            Transaksi::create([
-                'pesanan_id' => $pesanan->id,
-                'total' => $cart['harga'] * $cart['jumlah'],
-                'bayar' => 0,
-            ]);
+            $total += $cart['jumlah'] * $cart['harga'];
         }
+
+        $item = Transaksi::findOrFail($transaksi->id);
+        $item->total = $total;
+        $item->save();
+
+        $meja = Meja::findOrFail($meja);
+        $meja->status = 1;
+        $meja->save();
 
         session()->forget(['nama', 'meja', 'cart']);
 

@@ -35,6 +35,11 @@
 
                 color: white;
             }
+
+            .nama-menu {
+                width: 10px;
+                text-overflow: ellipsis;
+            }
         </style>
     @endpush
 
@@ -68,8 +73,8 @@
                                         <div class="cart-image" style="background-image: url('{{ Storage::url($cart['gambar']) }}')">
                                         </div>
                                         <div>
-                                            <strong class="">{{ $cart['nama_menu'] }}</strong><br>
-                                            Rp.{{ $cart['harga'] }}
+                                            <strong class="nama-menu">{{ $cart['nama_menu'] }}</strong><br>
+                                            Rp.{{ number_format($cart['harga']) }}
                                         </div>
                                         <div class="d-flex align-items-center">
                                             <strong class="mr-3">X</strong>
@@ -132,7 +137,7 @@
                                     </div>
                                     <div class="card-body">
                                         <strong>{{ $m->nama_menu }}</strong> <br>
-                                        Rp.{{ $m->harga }}
+                                        Rp.{{ number_format($m->harga) }}
                                         <div class="d-flex justify-content-between align-items-center mt-2">
                                             <input type="number" class="form-control mr-3" placeholder="Jumlah" name="jumlah" required>
                                             <!-- TODO:Disabled Button -->

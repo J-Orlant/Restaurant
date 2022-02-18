@@ -24,14 +24,23 @@
                             <div class="form-group">
                                 <label for="meja">Meja</label>
                                 <select type="text" id="meja" class="form-control" required name="meja">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
+                                    @foreach ($meja as $m)
+                                        <option value="{{ $m->id }}" @if ($m->status == 0)
+                                            disabled
+                                        @endif>{{ $m->id }}</option>
+                                    @endforeach
                                 </select>
                             </div>
                         </div>
-
                 </div>
+                {{-- <div class="row">
+                    <div class="col-md-3">
+                        1
+                    </div>
+                    <div class="col-md-3">
+                        2
+                    </div>
+                </div> --}}
                 <div class="row">
                     <div class="col-md-4">
                         <button class="btn btn-success">
