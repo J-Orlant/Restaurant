@@ -25,9 +25,14 @@
                                 <label for="meja">Meja</label>
                                 <select type="text" id="meja" class="form-control" required name="meja">
                                     @foreach ($meja as $m)
-                                        <option value="{{ $m->id }}" @if ($m->status == 0)
-                                            disabled
-                                        @endif>{{ $m->id }}</option>
+                                        <option value="{{ $m->id }}"
+                                            @if ($m->status == 0)
+                                                disabled
+                                            @endif
+                                            class = "{{ ($m->status == 0) ? 'text-danger' : 'text-success' }}"
+                                            >
+                                            {{ $m->id }}
+                                        </option>
                                     @endforeach
                                 </select>
                             </div>

@@ -26,7 +26,7 @@
             }
 
             .jumlah {
-                font-size: 20px;
+                font-size: 15px;
                 font-weight: bolder;
             }
         </style>

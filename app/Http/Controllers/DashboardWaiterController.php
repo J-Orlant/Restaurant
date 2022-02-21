@@ -17,9 +17,12 @@ class DashboardWaiterController extends Controller
 
     public function index()
     {
-        $pesanan = Pesanan::with('transaksi')->groupBy('transaksi_id')->where('status', 'DIBUAT')->orderBy('id', 'DESC')->paginate(5);
-        // dd($pesanan);
-        // $pesanan = Pesanan::groupBy('nama')->having('menu_id', '>', 1)->get();
+        $pesanan = Pesanan::with('transaksi')
+                            ->groupBy('transaksi_id')
+                            ->where('status', 'DIBUAT')
+                            ->orderBy('id', 'DESC')
+                            ->paginate(5);
+
 
         return view('pages.waiter.index',compact('pesanan'));
     }
@@ -81,6 +84,14 @@ class DashboardWaiterController extends Controller
         }
 
         $cart = session('cart');
+
+        if(isset($cart[$id])) {
+            $cart[$id]['jumlah'] += $request['jumlah'];
+
+            session()->put('cart', $cart);
+
+            return redirect()->back()->with('success', 'Menu berhasil dipesan');
+        }
 
         $cart[$id] = [
             'gambar' => $menu->gambar,
@@ -152,6 +163,6 @@ class DashboardWaiterController extends Controller
             session()->forget('cart');
         }
 
-        return redirect()->route('waiter-order-menu', session('nama'));
+        return redirect()->route('waiter-order-menu', session('nama'))->with('success', 'Keranjang berhasil dihapus!');
     }
 }

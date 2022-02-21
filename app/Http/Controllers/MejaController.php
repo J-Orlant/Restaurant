@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Meja;
 use Illuminate\Http\Request;
 
 class MejaController extends Controller
@@ -13,7 +14,10 @@ class MejaController extends Controller
      */
     public function index()
     {
-        return view('pages.admin.meja.index');
+
+        $meja = Meja::all();
+
+        return view('pages.admin.meja.index', compact('meja'));
     }
 
     /**
@@ -34,7 +38,9 @@ class MejaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Meja::create(['']);
+
+        return redirect()->route('meja.index');
     }
 
     /**
@@ -68,7 +74,18 @@ class MejaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $item = Meja::findOrFail($id);
+
+        // dd($item);
+        if($item->status == 1) {
+            $item->status = 0;
+            $item->save();
+        } else {
+            $item->status = 1;
+            $item->save();
+        }
+
+        return redirect()->route('meja.index');
     }
 
     /**
@@ -79,6 +96,6 @@ class MejaController extends Controller
      */
     public function destroy($id)
     {
-        //
+
     }
 }

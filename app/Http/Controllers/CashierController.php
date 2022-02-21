@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Meja;
 use App\Models\Pesanan;
 use App\Models\Transaksi;
+use Barryvdh\DomPDF\Facade\Pdf as PDF;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 
 class CashierController extends Controller
@@ -38,9 +41,35 @@ class CashierController extends Controller
                 'status' => 'LUNAS',
             ]);
 
-            return redirect()->route('dashboardCashier');
+            $meja = Meja::where('id', $item->meja)->first();
+            $meja->update([
+                'status' => 1,
+            ]);
+
+            return redirect()->route('cashier.success', $item->nama);
         } else {
-            dd('gagal');
+            return redirect()->back()->with('failed', 'Transaksi gagal');
         }
+    }
+
+    public function success($nama)
+    {
+
+        $item = Transaksi::where('nama', $nama)->first();
+
+        $pesanan = Pesanan::with('menu')->where('transaksi_id', $item->id)->get();
+
+        return view('pages.cashier.success', compact('item', 'pesanan'));
+    }
+
+    public function cetakTransaksi($nama)
+    {
+
+        $item = Transaksi::where('nama', $nama)->first();
+
+        $pesanan = Pesanan::with('menu')->where('transaksi_id', $item->id)->get();
+
+        $pdf = PDF::loadView('pages.cashier.laporan', ['item' => $item, 'pesanan' => $pesanan]);
+        return $pdf->stream('laporan'.Carbon::now().'.pdf');
     }
 }

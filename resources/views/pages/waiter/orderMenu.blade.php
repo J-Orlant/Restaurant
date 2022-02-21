@@ -77,8 +77,8 @@
                                             Rp.{{ number_format($cart['harga']) }}
                                         </div>
                                         <div class="d-flex align-items-center">
-                                            <strong class="mr-3">X</strong>
-                                            <input type="number" class="form-control" style="width: 50px" value="{{ $cart['jumlah'] }}">
+                                            <strong class="mr-2">X</strong>
+                                            {{ $cart['jumlah'] }}
                                         </div>
                                     </div>
                                 </div>
@@ -116,7 +116,7 @@
                     <div class="col-md-6 col-12">
                         <div class="form-group">
                             <label for="meja">Meja</label>
-                            <select type="text" id="meja1" class="form-control" required name="meja1">
+                            <select type="text" id="meja1" class="form-control" required name="meja1" disabled>
                                 <option value="{{ session('meja') }}" disabled selected>{{ session('meja') }}</option>
                             </select>
                         </div>
@@ -140,10 +140,7 @@
                                         Rp.{{ number_format($m->harga) }}
                                         <div class="d-flex justify-content-between align-items-center mt-2">
                                             <input type="number" class="form-control mr-3" placeholder="Jumlah" name="jumlah" required>
-                                            <!-- TODO:Disabled Button -->
-                                            <button class="btn btn-success" @if (isset($cart[$m->menu_id]))
-                                                disabled
-                                            @endif>Pesan</button>
+                                            <button class="btn btn-success">Pesan</button>
                                         </div>
                                     </div>
                                 </div>
@@ -159,7 +156,7 @@
     <script src="{{ asset('plugins/toast/nuget/content/scripts/toastr.js') }}"></script>
     @if (session()->has('success'))
     <script>
-        toastr["success"]("Menu berhasil dipesan!");
+        toastr["success"]("{{ session('success') }}");
         toastr.options = {
             "closeButton": true,
             "debug": false,

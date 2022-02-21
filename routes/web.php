@@ -26,13 +26,13 @@ use App\Models\Transaksi;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-});
+// Route::get('/', function () {
+//     return view('welcome');
+// });
 
 // Auth
-Route::get('/login', [LoginController::class, 'index'])->name('login')->middleware('guest');
-Route::post('/login', [LoginController::class, 'authenticate'])->name('loginPost');
+Route::get('/', [LoginController::class, 'index'])->name('login')->middleware('guest');
+Route::post('/', [LoginController::class, 'authenticate'])->name('loginPost');
 Route::post('/logout', [LoginController::class, 'logout'])->name('logout');
 
 
@@ -43,10 +43,12 @@ Route::post('/register', [RegisterController::class, 'store'])->name('registerPo
 // Admin Panel
 Route::middleware(['auth','isAdmin'])->group(function() {
     Route::get('/admin-panel', [DashboardController::class, 'index'])->name('dashboard');
+    Route::get('/admin-panel/laporan/{total}', [DashboardController::class, 'cetakLaporan'])->name('cetakLaporan');
     Route::post('/admin-panel', [DashboardController::class, 'laporan'])->name('laporan');
     Route::resource('/admin-panel/menu', MenuController::class);
     Route::resource('/admin-panel/meja', MejaController::class);
     Route::resource('/admin-panel/transaksi', TransaksiController::class);
+    Route::get('/admin-panel/transaksi/detail/{nama}', [TransaksiController::class, 'detail'])->name('transaksi.detail');
     // Route::get('/admin-panel/transaksi/detail', [TransaksiController::class, 'detail'])->name('transaksi.detail');
     Route::resource('/admin-panel/user', UserController::class);
 });
@@ -72,5 +74,7 @@ Route::middleware(['auth', 'isCashier'])->group(function() {
     Route::get('/cashier-panel', [CashierController::class, 'index'])->name('dashboardCashier');
     Route::get('/cashier-panel/detail/{nama}', [CashierController::class, 'detail'])->name('cashier.detail');
     Route::patch('/cashier-panel/detail/{nama}', [CashierController::class, 'transaksi'])->name('cashier.transaksi');
+    Route::get('/cashier-panel/detail/{nama}/success', [CashierController::class, 'success'])->name('cashier.success');
+    Route::get('/cashier-panel/detail/{nama}/laporan', [CashierController::class, 'cetakTransaksi'])->name('cashier.cetak');
 });
 

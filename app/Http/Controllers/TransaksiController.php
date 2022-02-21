@@ -103,4 +103,15 @@ class TransaksiController extends Controller
 
         return redirect()->route('transaksi.index');
     }
+
+    public function detail($nama)
+    {
+        $item = Transaksi::where('nama', $nama)->first();
+        $total = $item->total;
+
+        $pesanan = Pesanan::with('menu')->where('transaksi_id', $item->id)->get();
+        // dd($pesanan);
+
+        return view('pages.admin.transaksi.detail', compact('pesanan', 'item', 'total'));
+    }
 }

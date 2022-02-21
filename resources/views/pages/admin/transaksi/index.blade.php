@@ -30,19 +30,19 @@
                             @foreach ($data as $key => $data)
                             <tr>
                                 <th scope="row">{{ $key+1 }}</th>
-                                <td><a href="{{ route('transaksi.show', $data->pesanan->nama) }}">{{ $data->pesanan->nama }}</a></td>
-                                <td>{{ $data->pesanan->meja }}</td>
+                                <td>{{ $data->nama }}</td>
+                                <td>{{ $data->meja }}</td>
                                 <td>
-                                    <a href="{{ route('transaksi.edit', $data->id) }}" class="btn btn-warning">
-                                        <i class="fas fa-edit"></i>
+                                    <a href="{{ route('transaksi.detail', $data->nama) }}" class="btn btn-primary">
+                                        <i class="fas fa-info"></i>
                                     </a>
-                                    <form class="d-inline" action="{{ route('transaksi.destroy', $data->id) }}" method="post">
+                                    {{-- <form class="d-inline" action="{{ route('transaksi.destroy', $data->id) }}" method="post">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="btn btn-danger">
                                             <i class="fas fa-trash"></i>
                                         </button>
-                                    </form>
+                                    </form> --}}
                                 </td>
                             </tr>
                             @endforeach
