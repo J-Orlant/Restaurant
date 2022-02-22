@@ -58,26 +58,26 @@
         <!-- Nav Item - Charts -->
         <li class="nav-item {{ Route::currentRouteNamed('menu.index') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('menu.index') }}">
-                <i class="fas fa-fw fa-chart-area"></i>
+                <i class="fas fa-fw fa-book"></i>
                 <span>Menu</span></a>
         </li>
 
         <!-- Nav Item - Tables -->
         <li class="nav-item {{ Route::currentRouteNamed('meja.index') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('meja.index') }}">
-                <i class="fas fa-bell fa-fw"></i>
+                <i class="fas fa-table fa-fw"></i>
                 <span>Meja</span></a>
         </li>
 
         <li class="nav-item {{ Route::currentRouteNamed('transaksi.index') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('transaksi.index') }}">
-                <i class="fas fa-fw fa-table"></i>
+                <i class="fas fa-fw fa-dollar-sign"></i>
                 <span>Transaksi</span></a>
         </li>
 
         <li class="nav-item {{ Route::currentRouteNamed('user.index') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('user.index') }}">
-                <i class="fas fa-envelope fa-fw"></i>
+                <i class="fas fa-user fa-fw"></i>
                 <span>Users</span></a>
         </li>
         @elseif (Auth::user()->level == 'WAITER')

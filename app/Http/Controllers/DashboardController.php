@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Meja;
 use App\Models\Menu;
 use App\Models\Pesanan;
 use App\Models\Transaksi;
@@ -20,53 +21,48 @@ class DashboardController extends Controller
         $menu = Menu::count();
         $user = User::count();
         $transaksi = Transaksi::count();
-        $pesanan = Pesanan::count();
-
-        // if(request()->has('d')) {
-        //     $data = Pesanan::with('menu')
-        //                     ->where('status', 'DIANTAR')
-        //                     ->whereRaw('DATE(created_at) = ?', [request()->d])
-        //                     ->groupBy('menu_id')
-        //                     ->having('menu_id', '>', 0)
-        //                     ->get(['menu_id','jumlah']);
-        // } else {
-        //     $object = Carbon::now();
-        //     $date = $object->toDateString();
-        //     $data = Pesanan::with('menu')
-        //                     ->where('status', 'DIANTAR')
-        //                     ->whereRaw('DATE(created_at) = ?', [$date])
-        //                     ->groupBy('menu_id')
-        //                     ->having('menu_id', '>', 0)
-        //                     ->get(['menu_id','jumlah']);
-        // }
+        $meja = Meja::count();
 
         $object = Carbon::now();
-            $date = $object->toDateString();
+        $waktu = $object->toDateString();
 
-        $data = Menu::with('pesanan')
-                    ->get();
-
-
-        // $data = Menu::leftJoin('pesanan', 'menu.id', '=', 'pesanan.menu_id')
-        //             ->select('menu.*', 'pesanan.*')
-        //             // ->whereRaw('DATE(pesanan.created_at) = ?', [$date])
-        //             ->get();
-        // dd($data);
-
-
-        $total = 0;
-        if($data) {
-            foreach ($data as $d) {
-                $total += $d->harga * $d->pesanan->sum('jumlah');
+        if(request()->has('d')) {
+            $data = Pesanan::with('menu')
+                            ->where('status', 'DIANTAR')
+                            ->whereRaw('DATE(created_at) = ?', [request()->d])
+                            ->get(['menu_id','jumlah']);
+        } else {
+            $data = Pesanan::with('menu')
+                            ->where('status', 'DIANTAR')
+                            ->whereRaw('DATE(created_at) = ?', [$waktu])
+                            ->get(['menu_id','jumlah']);
+        }
+        $laporan = [];
+        foreach ($data as $key => $query) {
+            if(isset($laporan[$query->menu_id])) {
+                $laporan[$query->menu_id]['jumlah'] += $query->jumlah;
+            } else {
+                $laporan[$query->menu_id] = [
+                'gambar' => $query->menu->gambar,
+                'nama_menu' => $query->menu->nama_menu,
+                'harga' => $query->menu->harga,
+                'jumlah' => $query->jumlah,
+            ];
             }
         }
 
+        $total = 0;
+        if($laporan) {
+            foreach ($laporan as $d) {
+                $total += $d['harga'] * $d['jumlah'];
+            }
+        }
 
         // Chart
         $start = new Carbon();
         $day = cal_days_in_month(CAL_GREGORIAN, date('m'), date('y'));
         $orders = Transaksi::whereBetween('created_at', [$start->format('Y-m')."-01"." 00:00:00",
-                                                    $start->format('Y-m') . "-" . $day . " 23:59:59"])->get();
+                                                    $start->format('Y-m') . "-" . $day . " 23:59:59"])->where('status', 'LUNAS')->get();
 
         // dd($orders);
         $mon = 0;
@@ -80,34 +76,39 @@ class DashboardController extends Controller
             $date = $order->created_at;
             switch ($date->format('D-m')) {
                 case 'Mon-' . date('m'):
-                    $mon++;
+                    $mon += $order->total;
                     break;
                 case 'Tue-' . date('m'):
-                    $tues++;
+                    $tues += $order->total;
                     break;
                 case 'Wed-' . date('m'):
-                    $wed++;
+                    $wed += $order->total;
                     break;
                 case 'Thu-' . date('m'):
-                    $thurs++;
+                    $thurs += $order->total;
                     break;
                 case 'Fri-' . date('m'):
-                    $fri++;
+                    $fri += $order->total;
                     break;
                 case 'Sat-' . date('m'):
-                    $sat++;
+                    $sat += $order->total;
                     break;
                 case 'Sun-' . date('m'):
-                    $sun++;
+                    $sun += $order->total;
                     break;
             }
         }
 
+        // Pie Chart
+        $admin = User::where('level', 'ADMIN')->count();
+        $waiters = User::where('level', 'WAITER')->count();
+        $cashier = User::where('level', 'CASHIER')->count();
+
 
         return view('pages.admin.index', compact(
-                                            'menu', 'user', 'transaksi', 'pesanan', 'data', 'total',
-                                            'day', 'orders', 'mon', 'tues', 'wed', 'thurs', 'fri',
-                                            'sat', 'sun',
+                                            'menu', 'user', 'transaksi', 'meja', 'laporan', 'total',
+                                            'mon', 'tues', 'wed', 'thurs', 'fri', 'sat', 'sun', 'waktu',
+                                            'admin', 'waiters', 'cashier',
         ));
     }
 
@@ -120,14 +121,36 @@ class DashboardController extends Controller
         return redirect()->route('dashboard', ['d' => $waktu]);
     }
 
-    public function cetakLaporan($total)
+    public function cetakLaporan($tanggal)
     {
-        $data = Menu::with('pesanan')->get();
-        $carbon = Carbon::now();
-        $waktu = $carbon->toDateString();
+        $data = Pesanan::with('menu')
+                            ->where('status', 'DIANTAR')
+                            ->whereRaw('DATE(created_at) = ?', [$tanggal])
+                            ->get(['menu_id','jumlah']);
 
-        $pdf = PDF::loadView('pages.admin.laporan', ['data' => $data, 'total' => $total, 'waktu' => $waktu]);
-        return $pdf->stream('laporan'.Carbon::now().'.pdf');
+        $laporan = [];
+        foreach ($data as $key => $query) {
+            if(isset($laporan[$query->menu_id])) {
+                $laporan[$query->menu_id]['jumlah'] += $query->jumlah;
+            } else {
+                $laporan[$query->menu_id] = [
+                'gambar' => $query->menu->gambar,
+                'nama_menu' => $query->menu->nama_menu,
+                'harga' => $query->menu->harga,
+                'jumlah' => $query->jumlah,
+            ];
+            }
+        }
+
+        $total = 0;
+        if($laporan) {
+            foreach ($laporan as $d) {
+                $total += $d['harga'] * $d['jumlah'];
+            }
+        }
+
+        $pdf = PDF::loadView('pages.admin.laporan', ['data' => $laporan, 'total' => $total, 'waktu' => $tanggal]);
+        return $pdf->stream('laporan'.$tanggal.'.pdf');
 
 
     }

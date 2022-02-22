@@ -11310,11 +11310,11 @@
                     <tbody>
                         @foreach ($data as $key => $d)
                             <tr>
-                                <td class="text">{{ $key + 1 }}</td>
-                                <td class="text">{{ $d->nama_menu }}</td>
-                                <td class="text">{{ $d->pesanan->sum('jumlah')}}</td>
-                                <td class="text">Rp.{{ number_format($d->harga) }}</td>
-                                <td class="text">Rp.{{ number_format($d->pesanan->sum('jumlah') * $d->harga) }}</td>
+                                <td class="text">{{ $loop->iteration }}</td>
+                                <td class="text">{{ $d['nama_menu'] }}</td>
+                                <td class="text">{{ $d['jumlah']}}</td>
+                                <td class="text">Rp.{{ number_format($d['harga']) }}</td>
+                                <td class="text">Rp.{{ number_format($d['jumlah'] * $d['harga']) }}</td>
                             </tr>
                         @endforeach
                         <tr>

@@ -26,7 +26,7 @@
             }
 
             .jumlah {
-                font-size: 20px;
+                font-size: 15px;
                 font-weight: bolder;
             }
         </style>
@@ -39,9 +39,13 @@
                     <div class="d-flex justify-content-between">
                         Detail Pesanan
                         <div>
-                            <button class="btn btn-danger">
-                                <i class="fas fa-trash"></i>
-                            </button>
+                            <form class="d-inline" action="{{ route('transaksi.destroy', $item->id) }}" method="post">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
                         </div>
                     </div>
                 </div>

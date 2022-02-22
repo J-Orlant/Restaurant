@@ -43,7 +43,7 @@ Route::post('/register', [RegisterController::class, 'store'])->name('registerPo
 // Admin Panel
 Route::middleware(['auth','isAdmin'])->group(function() {
     Route::get('/admin-panel', [DashboardController::class, 'index'])->name('dashboard');
-    Route::get('/admin-panel/laporan/{total}', [DashboardController::class, 'cetakLaporan'])->name('cetakLaporan');
+    Route::get('/admin-panel/laporan/{tanggal}', [DashboardController::class, 'cetakLaporan'])->name('cetakLaporan');
     Route::post('/admin-panel', [DashboardController::class, 'laporan'])->name('laporan');
     Route::resource('/admin-panel/menu', MenuController::class);
     Route::resource('/admin-panel/meja', MejaController::class);

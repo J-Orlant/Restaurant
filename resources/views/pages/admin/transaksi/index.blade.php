@@ -23,6 +23,7 @@
                             <th scope="col">#</th>
                             <th scope="col">Pembeli</th>
                             <th scope="col">Meja</th>
+                            <th scope="col">Status</th>
                             <th scope="col">Aksi</th>
                             </tr>
                         </thead>
@@ -32,6 +33,9 @@
                                 <th scope="row">{{ $key+1 }}</th>
                                 <td>{{ $data->nama }}</td>
                                 <td>{{ $data->meja }}</td>
+                                <td class="{{ ($data->status == 'LUNAS') ? 'text-success' : 'text-damger' }}" >
+                                    {{ $data->status }}
+                                </td>
                                 <td>
                                     <a href="{{ route('transaksi.detail', $data->nama) }}" class="btn btn-primary">
                                         <i class="fas fa-info"></i>

@@ -44,14 +44,14 @@
             <div class="card-body">
                 <div class="row no-gutters align-items-center">
                     <div class="col mr-2">
-                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Pesanan
+                        <div class="text-xs font-weight-bold text-info text-uppercase mb-1">Meja
                         </div>
                         <div class="row no-gutters align-items-center">
-                            {{ $pesanan }}
+                            {{ $meja }}
                         </div>
                     </div>
                     <div class="col-auto">
-                        <i class="fas fa-clipboard-list fa-2x text-gray-300"></i>
+                        <i class="fas fa-table fa-2x text-gray-300"></i>
                     </div>
                 </div>
             </div>
