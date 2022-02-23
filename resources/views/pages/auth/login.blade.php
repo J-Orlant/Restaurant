@@ -21,7 +21,7 @@
                         <div class="col-lg-6">
                             <div class="p-5">
                                 <div class="text-center">
-                                    <h1 class="h4 text-gray-900 mb-4">Welcome Back!</h1>
+                                    <h1 class="h4 text-gray-900 mb-4">Restoran</h1>
                                 </div>
                                 @if (session()->has('loginError'))
                                     <div class="alert alert-danger alert-dismissable fade show" role="alert">
@@ -62,7 +62,7 @@
                                     <hr>
                                 </form>
                                 <div class="text-center">
-                                    <a class="small" href="{{ route('register') }}">Create an Account!</a>
+                                    <a class="small" href="{{ route('register') }}">Buat Akun</a>
                                 </div>
                             </div>
                         </div>

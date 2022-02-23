@@ -42,7 +42,10 @@ class UserController extends Controller
         $data = $request->all();
         $data['password'] = Hash::make($data['password']);
 
-        User::create($data);
+        $user = User::create($data);
+
+        $user->level = $data['level'];
+        $user->save();
 
         return redirect()->route('user.index')->with('success', 'User berhasil ditambah');
     }
@@ -66,7 +69,9 @@ class UserController extends Controller
      */
     public function edit($id)
     {
-        //
+        $item = User::findOrFail($id);
+
+        return view('pages.admin.users.edit', compact('item'));
     }
 
     /**
@@ -76,9 +81,24 @@ class UserController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(UserRequest $request, $id)
+    public function update(Request $request, $id)
     {
-        //
+        $data = $request->all();
+
+        $item = User::findOrFail($id);
+
+        if($request->password) {
+            $data['password'] = Hash::make($request->password);
+        } else {
+            unset($data['password']);
+        }
+
+        $item->update($data);
+
+        $item->level = $data['level'];
+        $item->save();
+
+        return redirect()->route('user.index')->with('success', 'User berhasil diupdate!');
     }
 
     /**

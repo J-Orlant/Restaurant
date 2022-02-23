@@ -68,8 +68,8 @@
                                     <td>Rp.{{ number_format($item->bayar) }}</td>
                                 </tr>
                                 <tr>
-                                    <th colspan="4">Uang Bayar</th>
-                                    <td>Rp.{{ number_format($item->total - $item->bayar) }}</td>
+                                    <th colspan="4">Uang Kembalian</th>
+                                    <td>Rp.{{ number_format(abs($item->total - $item->bayar)) }}</td>
                                 </tr>
                             </table>
                         </div>

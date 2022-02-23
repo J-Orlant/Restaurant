@@ -56,7 +56,7 @@
                                     <div class="image" style="background-image: url('{{ Storage::url($item->menu->gambar) }}')"></div>
                                     <div class="ml-3 mr-5">
                                         <strong class="nama-menu">{{ $item->menu->nama_menu }}</strong> <br>
-                                        Rp.{{ $item->menu->harga }}
+                                        Rp.{{ number_format($item->menu->harga) }}
                                     </div>
                                 </div>
                                 <p class="jumlah">x{{ $item->jumlah }}</p>

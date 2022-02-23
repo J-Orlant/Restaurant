@@ -42,7 +42,7 @@
                         </div>
                         <div class="form-group">
                             <label for="level">Level :</label>
-                            <select name="level" id="" class="form-control">
+                            <select name="level" id="level" class="form-control">
                                 <option value="ADMIN">ADMIN</option>
                                 <option value="WAITER" selected>WAITER</option>
                                 <option value="CASHIER">CASHIER</option>

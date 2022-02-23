@@ -72,6 +72,7 @@ Route::middleware(['auth', 'isWaiter'])->group(function() {
 
 Route::middleware(['auth', 'isCashier'])->group(function() {
     Route::get('/cashier-panel', [CashierController::class, 'index'])->name('dashboardCashier');
+    Route::post('/cashier-panel', [CashierController::class, 'date'])->name('cashier.date');
     Route::get('/cashier-panel/detail/{nama}', [CashierController::class, 'detail'])->name('cashier.detail');
     Route::patch('/cashier-panel/detail/{nama}', [CashierController::class, 'transaksi'])->name('cashier.transaksi');
     Route::get('/cashier-panel/detail/{nama}/success', [CashierController::class, 'success'])->name('cashier.success');

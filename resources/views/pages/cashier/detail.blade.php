@@ -119,7 +119,7 @@
             bayar.addEventListener('keyup', function() {
                 hasil = total.innerHTML - bayar.value;
                 if(hasil <= 0) {
-                    kembalian.innerHTML = "Rp." + hasil;
+                    kembalian.innerHTML = "Rp." + Math.abs(hasil);
                     button.disabled = false;
                 }
             });

@@ -10861,13 +10861,13 @@ a:focus {
 }
 
 .bg-login-image {
-  background: url("https://img.freepik.com/free-vector/hand-drawn-sketch-healthy-food-background_52683-18952.jpg?t=st=1645102841~exp=1645103441~hmac=7ac79477a4a5e1184971a064c4734b373edd94b88bbe057e537b6be5995c0b5f&w=1060");
+  background: url("../../../assets/image/login.jpg");
   background-position: center;
   background-size: cover;
 }
 
 .bg-register-image {
-  background: url("https://img.freepik.com/free-vector/hand-drawn-sketch-healthy-food-background_52683-18952.jpg?t=st=1645102841~exp=1645103441~hmac=7ac79477a4a5e1184971a064c4734b373edd94b88bbe057e537b6be5995c0b5f&w=1060");
+  background: url("../../../assets/image/regis.jpg");
   background-position: center;
   background-size: cover;
 }

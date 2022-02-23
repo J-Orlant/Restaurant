@@ -5,13 +5,13 @@
 @endsection
 
 @section('page-heading')
-    Menu
+    User
 @endsection
 
 @section('content')
     <div class="card shadow">
         <div class="card-header">
-            Edit Pesanan
+            Tambah User
         </div>
         <div class="container my-4">
             <div class="row">
@@ -26,31 +26,32 @@
                             <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                         </div>
                     @endif
-                    <form method="POST" action="{{ route('pesanan.store') }}" enctype="multipart/form-data">
+                    <form method="POST" action="{{ route('user.update', $item->id) }}" enctype="multipart/form-data">
                         @csrf
+                        @method('PUT')
                         <div class="form-group">
-                            <label for="nama">Nama Menu :</label>
-                            <select name="menu_id" class="custom-select" id="">
-                                <option value="{{ $item->id }}" disabled>{{ $namaMenu->nama_menu }}</option>
-                                @foreach ($menu as $m)
-                                    <option value="{{ $m->id }}">{{ $m->nama_menu }}</option>
-                                @endforeach
+                            <label for="nama">Nama :</label>
+                            <input type="text" name="name" class="form-control" required autofocus value="{{ $item->name }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email :</label>
+                            <input type="email" name="email" class="form-control" required value="{{ $item->email }}">
+                        </div>
+                        <div class="form-group">
+                            <label for="password">Password :</label>
+                            <input type="password" name="password" class="form-control">
+                        </div>
+                        <div class="form-group">
+                            <label for="level">Level :</label>
+                            <select name="level" id="level" class="form-control">
+                                <option value="{{ $item->level }}" selected>Tidak diganti</option>
+                                <option value="ADMIN">ADMIN</option>
+                                <option value="WAITER">WAITER</option>
+                                <option value="CASHIER">CASHIER</option>
                             </select>
                         </div>
-                        <div class="form-group">
-                            <label for="nama">Pembeli :</label>
-                            <input type="text" name="nama" class="form-control" required value="{{ $item->nama }}">
-                        </div>
-                        <div class="form-group">
-                            <label for="nama">Meja :</label>
-                            <input type="text" name="meja" class="form-control" required value="{{ $item->meja }}">
-                        </div>
-                        <div class="form-group">
-                            <label for="nama">Jumlah :</label>
-                            <input type="number" name="jumlah" class="form-control" required value="{{ $item->jumlah }}">
-                        </div>
                         <button type="submit" class="btn btn-success mt-4">
-                            Tambah Menu
+                            Edit User
                         </button>
                     </form>
                 </div>

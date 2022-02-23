@@ -37,7 +37,7 @@ class DashboardWaiterController extends Controller
     public function pesananConfirm($nama) {
         $item = Transaksi::where('nama', $nama)->first();
 
-        $pesanan = Pesanan::where('transaksi_id', $item->id)->get();
+        $pesanan = Pesanan::where('transaksi_id', $item->id)->where('status', 'DIBUAT')->get();
 
         if($pesanan) {
             foreach($pesanan as $p) {
@@ -135,7 +135,7 @@ class DashboardWaiterController extends Controller
         $item->save();
 
         $meja = Meja::findOrFail($meja);
-        $meja->status = 1;
+        $meja->status = 0;
         $meja->save();
 
         session()->forget(['nama', 'meja', 'cart']);

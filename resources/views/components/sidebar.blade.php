@@ -69,12 +69,6 @@
                 <span>Meja</span></a>
         </li>
 
-        <li class="nav-item {{ Route::currentRouteNamed('transaksi.index') ? 'active' : '' }}">
-            <a class="nav-link" href="{{ route('transaksi.index') }}">
-                <i class="fas fa-fw fa-dollar-sign"></i>
-                <span>Transaksi</span></a>
-        </li>
-
         <li class="nav-item {{ Route::currentRouteNamed('user.index') ? 'active' : '' }}">
             <a class="nav-link" href="{{ route('user.index') }}">
                 <i class="fas fa-user fa-fw"></i>

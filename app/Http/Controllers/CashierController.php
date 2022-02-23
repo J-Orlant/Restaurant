@@ -14,11 +14,34 @@ class CashierController extends Controller
     public function index()
     {
 
-        $transactions = Transaksi::with('pesanan')->where('status', 'TERTUNDA')->orderBy('id', 'DESC')->paginate(5);
+        $transactions = Transaksi::with('pesanan')
+                        ->where('status', 'TERTUNDA')
+                        ->orderBy('id', 'DESC')->paginate(5);
 
-        return view('pages.cashier.index', compact('transactions'));
+        if(request()->has('d')) {
+            $history = Transaksi::with('pesanan')
+                    ->where('status', 'LUNAS')
+                    ->orderBy('updated_at', 'DESC')
+                    ->whereRaw('DATE(created_at) = ?', [request()->d])
+                    ->paginate(5);
+        } else {
+            $history = Transaksi::with('pesanan')
+                    ->where('status', 'LUNAS')
+                    ->orderBy('updated_at', 'DESC')
+                    ->paginate(5);
+        }
+
+        return view('pages.cashier.index', compact('transactions', 'history'));
     }
 
+    public function date(Request $request)
+    {
+        $item = $request->all();
+
+        $waktu = $item['waktu'];
+
+        return redirect()->route('dashboardCashier', ['d' => $waktu]);
+    }
 
     public function detail($nama)
     {
